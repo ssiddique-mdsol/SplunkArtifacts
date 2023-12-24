@@ -1,5 +1,5 @@
 environments:
   DEV:
-    URL: 
+    URL: localhost
     PORT: 8089
     User: 

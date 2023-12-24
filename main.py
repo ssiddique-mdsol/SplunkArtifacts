@@ -6,7 +6,8 @@ def main():
     environment = input("Enter the environment name (e.g., 'DEV', 'PROD'): ")
 
     try:
-        config = read_config('environments.yml', environment)
+        config = read_config('config/environments.yml', environment)
+        # Connect to Splunk with the given configuration
         service = connect_to_splunk(config)
     except FileNotFoundError:
         print("Configuration file 'environments.yml' not found.")
@@ -18,11 +19,6 @@ def main():
         print(f"Error occurred: {e}")
         sys.exit(1)
 
-    try:
-        service = connect_to_splunk('path_to_your_config.yml', 'DEV')
-    except Exception as e:
-        print(f"Error connecting to Splunk: {e}")
-        sys.exit(1)
 
     print("Splunk Automation tasks completed successfully.")
 
