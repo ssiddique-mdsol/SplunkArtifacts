@@ -1,6 +1,7 @@
-environments:
+Environments:
   DEV:
     URL: localhost
     PORT: 8089
-    User: 
-    Repo: 
+    User: admin
+    Repo: repository
+    App: search

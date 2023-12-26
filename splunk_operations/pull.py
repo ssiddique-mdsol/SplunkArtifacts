@@ -1,40 +1,44 @@
 import os
 import json
 
-import warnings
+class SplunkArtifactPuller:
+    def __init__(self, service, repo_path):
+        """
+        Initialize the SplunkArtifactPuller.
 
-def save_artifact(content, folder_path, artifact_name):
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
+        :param service: Connected Splunk service object.
+        :param repo_path: Path to the repository where artifacts are saved.
+        """
+        self.service = service
+        self.repo_path = repo_path
 
-    file_path = os.path.join(folder_path, f"{artifact_name}.json")
-    with open(file_path, 'w') as file:
-        json.dump(content, file, indent=4)
+    def save_artifact(self, content, folder_path, artifact_name):
+        """
+        Save an individual artifact to a file in the specified folder.
 
-def pull_artifacts(service, repo_path):
-    artifacts = {
-        "saved_searches": service.saved_searches
-    }
+        :param content: The content of the artifact.
+        :param folder_path: The path to the folder where the artifact will be saved.
+        :param artifact_name: The name of the artifact.
+        """
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
 
-    for artifact_type, artifact_collection in artifacts.items():
-        folder_path = os.path.join(repo_path, artifact_type)
-        for artifact in artifact_collection:
-            save_artifact(artifact.content, folder_path, artifact.name)
+        file_path = os.path.join(folder_path, f"{artifact_name}.json")
+        with open(file_path, 'w') as file:
+            json.dump(content, file, indent=4)
 
-    print(f"Artifacts have been pulled into {repo_path}")
+    def pull_artifacts(self):
+        """
+        Pull various Splunk artifacts and save them to respective folders.
+        """
+        artifacts = {
+            "saved_searches": self.service.saved_searches
+        }
 
+        for artifact_type, artifact_collection in artifacts.items():
+            folder_path = os.path.join(self.repo_path, artifact_type)
+            for artifact in artifact_collection:
+                self.save_artifact(artifact.content, folder_path, artifact.name)
 
-def dump(obj):
-  for name in dir(obj):
-    e = False
-    with warnings.catch_warnings():
-      warnings.simplefilter("ignore")
-      try:
-        v = getattr(obj, name)
-      except:
-        e = True
-      warnings.simplefilter("default")
-    if not e:
-      print("obj.%s = %r" % (name, v))
-    else:
-      print("<inaccessible property obj.%s>" % name)
+        print(f"Artifacts have been pulled into {self.repo_path}")
+
