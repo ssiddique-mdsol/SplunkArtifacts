@@ -29,11 +29,12 @@ To install the Splunk Automation Project, follow these steps:
 Update the config/environments.yml file with your Splunk environment's details. Example configuration:
 
 ```
-environments:
+Environments:
   DEV:
     URL: https://search-head.my-splunk.com
     PORT: 8089
-    User: username@example.com
+    User: username@example.com or username
+    App: search
 ```
 
 ## Usage
